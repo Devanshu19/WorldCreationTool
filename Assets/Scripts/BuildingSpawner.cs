@@ -1,19 +1,44 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class BuildingSpawner : MonoBehaviour
 {
-    [SerializeField] Vector2 mousePosition;
+    [SerializeField] Vector3 mousePosition;
+    [SerializeField] Camera topLookCamera;
+
+    [SerializeField] GameObject buildingPrefab;
+
+    [SerializeField] Transform buildingContainer;
+
+    [SerializeField] LayerMask groundMask;
+    [SerializeField] LayerMask layersToAvoid;
 
     public void MouseLeft(InputAction.CallbackContext context)
     {
-        Debug.Log("Mouse Button");
-        if (context.phase == InputActionPhase.Performed) Debug.Log("Button Down");
-        else if (context.phase == InputActionPhase.Canceled) Debug.Log("Button Up");
+        if (context.phase == InputActionPhase.Performed)
+        {
+            SpawnBuilding();
+        }
     }
 
     public void MousePosition(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Performed) mousePosition = context.ReadValue<Vector2>();
+        mousePosition = new Vector3(context.ReadValue<Vector2>().x, context.ReadValue<Vector2>().y, 5);
+    }
+
+    public void SpawnBuilding()
+    {
+        Ray ray = topLookCamera.ScreenPointToRay(mousePosition);
+        RaycastHit rayHitData;
+
+        if (Physics.Raycast(ray, out rayHitData, int.MaxValue, groundMask))
+        {
+            if (!EventSystem.current.IsPointerOverGameObject())
+            {
+                GameObject gO = Instantiate<GameObject>(buildingPrefab, rayHitData.point, Quaternion.identity);
+                gO.transform.parent = buildingContainer;
+            }
+        }
     }
 }

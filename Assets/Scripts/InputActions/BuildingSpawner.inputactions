@@ -16,7 +16,7 @@
                 },
                 {
                     "name": "Position",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "65d338a6-1c46-4236-8c5e-d3e866aae6db",
                     "expectedControlType": "Vector2",
                     "processors": "",
@@ -38,8 +38,30 @@
                 },
                 {
                     "name": "",
+                    "id": "561bb93a-6c0c-4745-bc33-dbd067987321",
+                    "path": "<Touchscreen>/primaryTouch/tap",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LeftButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "6bb79af6-d695-453b-ade2-7eadab05f160",
                     "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Position",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "53f2d9bf-621e-4404-8d88-e9c1d9c3c5c4",
+                    "path": "<Touchscreen>/position",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
