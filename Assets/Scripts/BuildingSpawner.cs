@@ -32,12 +32,17 @@ public class BuildingSpawner : MonoBehaviour
         Ray ray = topLookCamera.ScreenPointToRay(mousePosition);
         RaycastHit rayHitData;
 
-        if (Physics.Raycast(ray, out rayHitData, int.MaxValue, groundMask))
+        if (Physics.Raycast(ray, out rayHitData, int.MaxValue))
         {
             if (!EventSystem.current.IsPointerOverGameObject())
             {
-                GameObject gO = Instantiate<GameObject>(buildingPrefab, rayHitData.point, Quaternion.identity);
-                gO.transform.parent = buildingContainer;
+                if (rayHitData.collider.gameObject.layer == Mathf.RoundToInt(Mathf.Log(groundMask.value, 2)))
+                {
+                    GameObject gO = Instantiate<GameObject>(buildingPrefab, rayHitData.point, Quaternion.identity);
+                    gO.transform.parent = buildingContainer;
+
+                    Debug.DrawLine(ray.origin, rayHitData.point, Color.red, 100);
+                }
             }
         }
     }
