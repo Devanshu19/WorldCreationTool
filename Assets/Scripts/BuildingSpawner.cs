@@ -14,6 +14,8 @@ public class BuildingSpawner : MonoBehaviour
     [SerializeField] LayerMask groundMask;
     [SerializeField] LayerMask layersToAvoid;
 
+    [SerializeField] BuildingSelectionChannelSO buildingSelectionChannelSO;
+
     public void MouseLeft(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Performed)
@@ -38,8 +40,9 @@ public class BuildingSpawner : MonoBehaviour
             {
                 if (rayHitData.collider.gameObject.layer == Mathf.RoundToInt(Mathf.Log(groundMask.value, 2)))
                 {
-                    GameObject gO = Instantiate<GameObject>(buildingPrefab, rayHitData.point, Quaternion.identity);
-                    gO.transform.parent = buildingContainer;
+                    GameObject buildingPrefab = buildingSelectionChannelSO.RaiseGetCurrentlySelectedBuilding();
+
+                    Instantiate<GameObject>(buildingPrefab, rayHitData.point, Quaternion.identity, buildingContainer);
 
                     Debug.DrawLine(ray.origin, rayHitData.point, Color.red, 100);
                 }
