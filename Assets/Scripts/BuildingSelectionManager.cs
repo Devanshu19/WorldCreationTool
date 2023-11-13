@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using UnityEngine;
 
 [System.Serializable]
@@ -44,12 +43,14 @@ public class BuildingSelectionManager : MonoBehaviour
 
     private void OnEnable()
     {
+        // Subscribe to useful events.
         buildingSelectionChannelSO.E_GetCurrentlySelectedBuilding += getCurrentlySelectedBuilding;
         buildingSelectionChannelSO.E_SelectBuilding += SelectBuilding;
     }
 
     private void OnDisable()
     {
+        // Unsubscribe from subscribed events.
         buildingSelectionChannelSO.E_GetCurrentlySelectedBuilding -= getCurrentlySelectedBuilding;
         buildingSelectionChannelSO.E_SelectBuilding -= SelectBuilding;
     }
@@ -59,6 +60,7 @@ public class BuildingSelectionManager : MonoBehaviour
         return currentlySelectedBuilding;
     }
 
+    // Selects the building for spawning.
     private void SelectBuilding(string id)
     {
         foreach (BuildingData buildingData in allBuildingData)

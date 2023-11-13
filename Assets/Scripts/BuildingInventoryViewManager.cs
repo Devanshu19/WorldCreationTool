@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,7 +14,7 @@ public class BuildingInventoryViewManager : MonoBehaviour
     [SerializeField] BuildingSelectionChannelSO buildingSelectionChannelSO;
 
     [Space, Header("DEBUG AREA"), TextArea]
-    [SerializeField] String DEBUG_Information;
+    [SerializeField] string DEBUG_Information;
 
     private void Awake()
     {
@@ -28,6 +27,7 @@ public class BuildingInventoryViewManager : MonoBehaviour
         buildingInventoryChannelSO.E_PopulateSelectionButtons -= PopulateBuildingSelectionButtons;
     }
 
+    // Populate the building selection buttons using the provided building data objects.
     private List<BuildingData> PopulateBuildingSelectionButtons(List<BuildingData> allBuildingData)
     {
         for (int x = 0; x < allBuildingData.Count; x++)
@@ -43,6 +43,7 @@ public class BuildingInventoryViewManager : MonoBehaviour
         return allBuildingData;
     }
 
+    // Handles the button press event from buttons.
     private void SelectionBuildingButtonHandler(GameObject buttonObj)
     {
         foreach (Button button in buildingSelectionButtons)
