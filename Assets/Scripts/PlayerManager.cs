@@ -20,7 +20,6 @@ public class PlayerManager : MonoBehaviour
 
     public void ResetPosition()
     {
-        Debug.Log("Position Reset.");
         CharacterController characterController = GetComponent<CharacterController>();
 
         characterController.enabled = false;
