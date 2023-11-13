@@ -33,7 +33,12 @@ public class BuildingInventoryViewManager : MonoBehaviour
         for (int x = 0; x < allBuildingData.Count; x++)
         {
             GameObject newSelectionButton = Instantiate<GameObject>(buildingSelectionButtonPrefab, buildingSelectionButtonContainer);
-            newSelectionButton.GetComponent<Image>().sprite = allBuildingData[x].UIImage;
+
+            Image imageComponent = newSelectionButton.GetComponent<Image>();
+
+            imageComponent.sprite = allBuildingData[x].UIImage;
+            if (x == 0) imageComponent.color = selectionTint;
+
             newSelectionButton.GetComponent<Button>().onClick.AddListener(() => SelectionBuildingButtonHandler(newSelectionButton));
 
             buildingSelectionButtons.Add(newSelectionButton.GetComponent<Button>());
