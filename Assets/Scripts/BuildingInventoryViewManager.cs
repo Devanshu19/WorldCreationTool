@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,11 +8,18 @@ public class BuildingInventoryViewManager : MonoBehaviour
     [SerializeField] GameObject buildingSelectionButtonPrefab;
     [SerializeField] RectTransform buildingSelectionButtonContainer;
 
+    [SerializeField] List<Button> buildingSelectionButtons;
+    [SerializeField] Color selectionTint;
+
     [SerializeField] BuildingInventoryChannelSO buildingInventoryChannelSO;
     [SerializeField] BuildingSelectionChannelSO buildingSelectionChannelSO;
 
-    private void OnEnable()
+    [Space, Header("DEBUG AREA"), TextArea]
+    [SerializeField] String DEBUG_Information;
+
+    private void Awake()
     {
+        buildingSelectionButtons = new List<Button>();
         buildingInventoryChannelSO.E_PopulateSelectionButtons += PopulateBuildingSelectionButtons;
     }
 
@@ -28,6 +36,7 @@ public class BuildingInventoryViewManager : MonoBehaviour
             newSelectionButton.GetComponent<Image>().sprite = allBuildingData[x].UIImage;
             newSelectionButton.GetComponent<Button>().onClick.AddListener(() => SelectionBuildingButtonHandler(newSelectionButton));
 
+            buildingSelectionButtons.Add(newSelectionButton.GetComponent<Button>());
             allBuildingData[x].SetButtonIdentificationID(newSelectionButton.GetInstanceID().ToString());
         }
 
@@ -36,6 +45,15 @@ public class BuildingInventoryViewManager : MonoBehaviour
 
     private void SelectionBuildingButtonHandler(GameObject buttonObj)
     {
+        foreach (Button button in buildingSelectionButtons)
+        {
+            if (button.gameObject.GetInstanceID() == buttonObj.GetInstanceID())
+            {
+                button.gameObject.GetComponent<Image>().color = selectionTint;
+            }
+            else button.gameObject.GetComponent<Image>().color = Color.white;
+        }
+
         buildingSelectionChannelSO.RaiseSelectBuilding(buttonObj.GetInstanceID().ToString());
     }
 }

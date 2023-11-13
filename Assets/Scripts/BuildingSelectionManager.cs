@@ -1,5 +1,5 @@
-using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using UnityEngine;
 
 [System.Serializable]
@@ -23,8 +23,7 @@ public class BuildingData
 
 public class BuildingSelectionManager : MonoBehaviour
 {
-    [SerializeField]
-    List<BuildingData> allBuildingData;
+    [SerializeField] List<BuildingData> allBuildingData;
 
     [SerializeField] GameObject currentlySelectedBuilding;
 
@@ -35,7 +34,10 @@ public class BuildingSelectionManager : MonoBehaviour
     {
         // Select the first building data as the default.
         currentlySelectedBuilding = allBuildingData[0].buildingObject;
+    }
 
+    private void Start()
+    {
         // Returns the same building data but with UI element ID included.
         allBuildingData = buildingInventoryChannelSO.RaisePopulateSelectionButtons(allBuildingData);
     }
