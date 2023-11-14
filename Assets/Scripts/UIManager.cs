@@ -6,4 +6,9 @@ public class UIManager : MonoBehaviour
     {
         PlayerManager.Instance.ResetPosition();
     }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
 }
