@@ -8,13 +8,25 @@ public class BuildingSpawner : MonoBehaviour
     [SerializeField] Camera topLookCamera;
 
     [SerializeField] GameObject buildingPrefab;
+    [SerializeField] LayerMask buildingMask;
 
     [SerializeField] Transform buildingContainer;
 
     [SerializeField] LayerMask groundMask;
     [SerializeField] LayerMask layersToAvoid;
 
+    [SerializeField] AudioClip placementSuccessfulEffect;
+    [SerializeField] AudioClip placementFailedEffect;
+
     [SerializeField] BuildingSelectionChannelSO buildingSelectionChannelSO;
+
+    private RaycastHit rayHitData;
+    private AudioSource placementAudioPlayer;
+
+    private void Awake()
+    {
+        placementAudioPlayer = GetComponent<AudioSource>();
+    }
 
     public void MouseLeft(InputAction.CallbackContext context)
     {
@@ -32,7 +44,6 @@ public class BuildingSpawner : MonoBehaviour
     public void SpawnBuilding()
     {
         Ray ray = topLookCamera.ScreenPointToRay(mousePosition);
-        RaycastHit rayHitData;
 
         if (Physics.Raycast(ray, out rayHitData, int.MaxValue))
         {
@@ -41,8 +52,22 @@ public class BuildingSpawner : MonoBehaviour
                 if (rayHitData.collider.gameObject.layer == Mathf.RoundToInt(Mathf.Log(groundMask.value, 2)))
                 {
                     GameObject buildingPrefab = buildingSelectionChannelSO.RaiseGetCurrentlySelectedBuilding();
+                    GameObject newBuilding = Instantiate(buildingPrefab, rayHitData.point, Quaternion.identity, buildingContainer);
+                    Bounds newBuildingBounds = newBuilding.GetComponent<Collider>().bounds;
+                    newBuilding.SetActive(false);
 
-                    Instantiate<GameObject>(buildingPrefab, rayHitData.point, Quaternion.identity, buildingContainer);
+                    Collider[] touchingColliders = Physics.OverlapBox(rayHitData.point + Vector3.up * newBuildingBounds.size.y * 0.5f, newBuildingBounds.size * 0.5f, Quaternion.identity, buildingMask);
+
+                    if (touchingColliders.Length > 0)
+                    {
+                        Destroy(newBuilding);
+                        placementAudioPlayer.PlayOneShot(placementFailedEffect);
+                    }
+                    else
+                    {
+                        newBuilding.SetActive(true);
+                        placementAudioPlayer.PlayOneShot(placementSuccessfulEffect);
+                    }
 
                     Debug.DrawLine(ray.origin, rayHitData.point, Color.red, 100);
                 }

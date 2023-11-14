@@ -29,6 +29,9 @@ public class BuildingSelectionManager : MonoBehaviour
     [SerializeField] BuildingSelectionChannelSO buildingSelectionChannelSO;
     [SerializeField] BuildingInventoryChannelSO buildingInventoryChannelSO;
 
+    [Space, TextArea(5, 10)]
+    [SerializeField] string DEBUG_Information;
+
     private void Awake()
     {
         // Select the first building data as the default.
